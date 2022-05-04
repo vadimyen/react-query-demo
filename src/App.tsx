@@ -3,7 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "./api/queryClient";
-import { Users } from "./components/Users";
+import { Users } from "./components/users/Users";
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { Toaster } from "react-hot-toast";
 

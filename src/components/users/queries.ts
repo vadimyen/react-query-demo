@@ -83,11 +83,7 @@ export const useUserQuery = (
   });
 
 type UpdateUserPayload = Omit<User, "id">;
-type UpdateUserResponse = {
-  name: string;
-  email: string;
-  phone: string;
-};
+type UpdateUserResponse = User;
 export const updateUser = (values: {
   id: User["id"];
   payload: UpdateUserPayload;
@@ -96,17 +92,21 @@ export const updateUser = (values: {
     .patch(`users/${values.id}`, { json: values.payload })
     .json<UpdateUserResponse>();
 
+const hasPreviousUser = (
+  value: unknown
+): value is { previousUser: User; updatedUser: User } =>
+  typeof value === "object" &&
+  value !== null &&
+  value.hasOwnProperty("previousUser") &&
+  value.hasOwnProperty("updatedUser");
+
 export const useUpdateUserMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     (values: Parameters<typeof updateUser>[0]) => updateUser(values),
     {
-      retry: false,
-      onSuccess: (_, variables) => {
-        queryClient.invalidateQueries(usersKeys.all);
-        toast.success(`User #${variables.id} updated`);
-      },
+      onSuccess: () => queryClient.invalidateQueries(usersKeys.all),
     }
   );
 };

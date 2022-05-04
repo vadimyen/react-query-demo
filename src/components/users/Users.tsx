@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useUsersQuery } from "./users/queries";
-import { User } from "./users/User";
+import { useUsersQuery } from "./queries";
+import { User } from "./User";
 
 export const Users = () => {
   const [page, setPage] = useState(1);

@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import {
   User as UserType,
   UserPreview,
@@ -24,7 +25,19 @@ export const User: FC<UserProps> = ({ preview }) => {
   const submitDisabled = isMutationLoading || isMutationLoading;
 
   const onSubmit = (values: Form) =>
-    user ? mutate({ id: user.id, payload: values }) : undefined;
+    user
+      ? mutate(
+          { id: user.id, payload: values },
+          {
+            onSuccess: (_, variables) => {
+              toast.success(`User #${variables.id} updated`);
+            },
+            onError: (_, variables) => {
+              toast.error(`User hasn't been #${variables.id} updated`);
+            },
+          }
+        )
+      : undefined;
 
   return (
     <article>
