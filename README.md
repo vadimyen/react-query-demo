@@ -2,9 +2,20 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Branches
+
+- The master branch demonstrates working with React Query, that's declarative API, background fetching, invalidation queries after a successful mutation.
+- PersistQueryClient branch demonstrates offline-first support of React Query (via localstorage). The only problem is that it works only when the network is off while the app is already run, if you're offline and trying to open a browser and go to the app, it'll fail. Since there's only an API call cache, no resources Also, there's a pitfall, i.e., it's an experimental library feature, so it's tested, though the API may change (methods names, signatures). If we stick with it, we have to pin the lib version, and after the feature gets stable, update the code (fortunately, it's only 1 file).
+- Service-worker branch demonstrates offline-first support with a service worker, it's able to work if the network is off at the beginning. Though, it requires deliberate cache configuration and revalidation. To try this branch you need to get a prod build (`npm run build`) and serve it with a web-server (`npm i -g serve`, `serve -s build`).
+- Worker-and-PersistQueryClient branch demonstrates a combo of the last two, i.e, resource cache via a service worker, API cache via React Query.
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm run fake-server` (starts backend)
+
+Then
 
 ### `npm start`
 
