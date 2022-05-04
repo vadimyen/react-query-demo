@@ -85,4 +85,23 @@ self.addEventListener("message", (event) => {
   }
 });
 
+self.onfetch = function(event) {
+  event.respondWith(
+    // @ts-expect-error
+       (async function() {
+          var cache = await caches.open('appi');
+          var cachedFiles = await cache.match(event.request);
+          if(cachedFiles) {
+              return cachedFiles;
+          } else {
+              try {
+                  var response = await fetch(event.request);
+                  await cache.put(event.request, response.clone());
+                  return response;
+              } catch(e) { /* ... */ }
+          }
+      }())
+  )
+}
+
 // Any other custom service worker logic can go here.
